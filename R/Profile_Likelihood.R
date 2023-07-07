@@ -162,10 +162,6 @@ profile_likelihood <- function(obj_f,
                                   params_names = params_names,
                                   constant_params=constant_params,
                                   data_df = data_df,
-                                  # Cwater = Cwater,
-                                  # age = age ,
-                                  # temperatures = temperatures,
-                                  # MW = MW,
                                   errors_df = errors_df)
     
     cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_name ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
@@ -256,10 +252,6 @@ profile_likelihood <- function(obj_f,
                                   params_names = params_names,
                                   constant_params=constant_params,
                                   data_df = data_df,
-                                  # Cwater = Cwater,
-                                  # age = age ,
-                                  # temperatures = temperatures,
-                                  # MW = MW,
                                   errors_df = errors_df)
     
     cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_name ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
