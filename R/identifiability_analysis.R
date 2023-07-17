@@ -140,13 +140,32 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
     # following refion: 
     # {theta | chi^2(theta) - chi^2(theta_hat) < Delta_alpha} where
     Delta_alpha = qchisq(alpha, df)
-    
+    threshold = Delta_alpha + global_optimum
     # Estimate the lower confidence interval
     # Check if the threshold was exceeded at the backwards search. If true, then
     # the lower bound is the last theta under the threshold, else it is considered 
     # -Inf.
-    if(pl_results[1,2] > global_optimum + Delta_alpha){
-      lower_bound <- pl_results[2,1]
+    if(pl_results[1,2] > threshold){
+      # Use those 2 theta_i values that yield to the minimum distance from the threshold
+      # and interpoalte between them in order to estimate the lower bound 
+      # of the parameter. 
+      
+      # This is the last value of the parameter that yields chi^2 lower than the 
+      # threshold
+      theta_under_threshold <- pl_results[2,1]
+      # This is the chi^2 value that this parameters has
+      chi2_under_threshold <- pl_results[2,2]
+      # This is the last value of the parameter that yields chi^2 grater than the 
+      # threshold
+      theta_over_threshold <- pl_results[1,1]
+      # This is the chi^2 value that this parameters has
+      chi2_over_threshold <- pl_results[1,2]
+      
+      slope <- (chi2_over_threshold - chi2_under_threshold)/(theta_over_threshold - theta_under_threshold)
+      dy <- threshold - chi2_under_threshold
+      dx <- dy/slope
+      lower_bound <- theta_under_threshold + dx
+      
     }else{
       lower_bound <- -Inf
     }
@@ -155,8 +174,26 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
     # Check if the threshold was exceeded at the forward search. If true, then
     # the lower bound is the last theta under the threshold, else it is considered 
     # +Inf.
-    if(pl_results[dim(pl_results)[1],2] > global_optimum + Delta_alpha){
-      upper_bound <- pl_results[(dim(pl_results)[1]-1),1]
+    if(pl_results[dim(pl_results)[1],2] > threshold){
+      # Use those 2 theta_i values that yield to the minimum distance from the threshold
+      # and interpoalte between them in order to estimate the lower bound 
+      # of the parameter. 
+      
+      # This is the last value of the parameter that yields chi^2 lower than the 
+      # threshold
+      theta_under_threshold <- pl_results[(dim(pl_results)[1]-1),1]
+      # This is the chi^2 value that this parameters has
+      chi2_under_threshold <- pl_results[(dim(pl_results)[1]-1),2]
+      # This is the last value of the parameter that yields chi^2 grater than the 
+      # threshold
+      theta_over_threshold <- pl_results[dim(pl_results)[1],1]
+      # This is the chi^2 value that this parameters has
+      chi2_over_threshold <- pl_results[dim(pl_results)[1],2]
+      
+      slope <- (chi2_over_threshold - chi2_under_threshold)/(theta_over_threshold - theta_under_threshold)
+      dy <- threshold - chi2_under_threshold
+      dx <- dy/slope
+      upper_bound <- theta_under_threshold + dx
     }else{
       upper_bound <- +Inf
     }
@@ -178,12 +215,12 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
     results_df$Exit_code_B[i] <- output[[i]]$b_exit
     results_df$Exit_code_F[i] <- output[[i]]$f_exit
     if(confidence_intervals$Lower_bound == -Inf & confidence_intervals$Upper_bound == Inf){
-      results_df$`Non-Identifiability`[i] <- "Structural"
+      results_df$'Non-Identifiability'[i] <- "Structural"
     }else if(confidence_intervals$Lower_bound == -Inf & confidence_intervals$Upper_bound != Inf |
              confidence_intervals$Lower_bound != -Inf & confidence_intervals$Upper_bound == Inf){
-      results_df$`Non-Identifiability`[i] <- "Practical"
+      results_df$'Non-Identifiability'[i] <- "Practical"
     }else{
-      results_df$`Non-Identifiability`[i] <- "Identifiable"
+      results_df$'Non-Identifiability'[i] <- "Identifiable"
     }
   }
   
