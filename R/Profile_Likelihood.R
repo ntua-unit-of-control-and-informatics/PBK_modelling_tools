@@ -76,10 +76,13 @@ profile_likelihood <- function(obj_f,
   
   # Function to estimate the theta_step by solving the equation
   # chi^2(theta) - chi^2(theta_hat) - q*Delta_alpha = 0 
-  theta_step_estimation <- function(theta_step, theta_last, obj_f, constant_params, index, current_score, q, Delta_alpha){
+  theta_step_estimation <- function(theta_step, theta_last, obj_f, constant_params, index, current_score, q, Delta_alpha, direction){
     i <- index
     x <- theta_last
-    x[i] <- x[i] + theta_step
+    if(direction=='forward'){
+      x[i] <- x[i] + theta_step
+    }else if(direction=='backward'){
+      x[i] <- x[i] - theta_step}
     chi2_last <- current_score
     
     chi2 <- obj_f(x = x, constant_theta = NULL, constant_theta_name = NULL, params_names = names(x),
@@ -118,13 +121,17 @@ profile_likelihood <- function(obj_f,
   while (iter_counter < N_samples & current_score < threshold) {
     iter_counter <- iter_counter + 1
     # Estimation of theta_step 
-    theta_step <-  nloptr::nloptr(x0 = 0.1,
+    theta_step <-  nloptr::nloptr(x0 = 0.25*abs(thetas[[i]]),
                                   eval_f = theta_step_estimation,
-                                  lb	= 1e-06,
-                                  ub = 1,
+                                  lb  = min_step_coef*abs(thetas[[i]]),
+                                  ub = max_step_coef*abs(thetas[[i]]),
                                   opts = opts_theta_step,
-                                  theta_last = theta_last, index = i,
-                                  current_score = current_score, q = q, Delta_alpha=Delta_alpha,
+                                  theta_last = theta_last,
+                                  index = i,
+                                  current_score = current_score, 
+                                  q = q, 
+                                  Delta_alpha=Delta_alpha,
+                                  direction='forward',
                                   obj_f=obj_f, 
                                   constant_params=constant_params)$solution
     
@@ -154,7 +161,7 @@ profile_likelihood <- function(obj_f,
     set.seed(12312)
     optimization<- nloptr::nloptr(x0 = x0,
                                   eval_f = obj_f,
-                                  lb	= lb[-i],
+                                  lb  = lb[-i],
                                   ub = ub[-i],
                                   opts = opts,
                                   constant_theta = constant_theta,
@@ -210,13 +217,14 @@ profile_likelihood <- function(obj_f,
   while (iter_counter < N_samples & current_score < threshold) {
     iter_counter <- iter_counter + 1
     # Estimation of theta_step 
-    theta_step <-  nloptr::nloptr(x0 = 0.1,
+    theta_step <-  nloptr::nloptr(x0 = 0.25*abs(thetas[[i]]),
                                   eval_f = theta_step_estimation,
-                                  lb	= 1e-06,
-                                  ub = 1,
+                                  lb  = min_step_coef*abs(thetas[[i]]),
+                                  ub = max_step_coef*abs(thetas[[i]]),
                                   opts = opts_theta_step,
                                   theta_last = theta_last, index = i,
                                   current_score = current_score, q = q, Delta_alpha=Delta_alpha,
+                                  direction='backward',
                                   obj_f=obj_f, 
                                   constant_params=constant_params)$solution
     
@@ -244,7 +252,7 @@ profile_likelihood <- function(obj_f,
     set.seed(12312)
     optimization<- nloptr::nloptr(x0 = x0,
                                   eval_f = obj_f,
-                                  lb	= lb[-i],
+                                  lb  = lb[-i],
                                   ub = ub[-i],
                                   opts = opts,
                                   constant_theta = constant_theta,
