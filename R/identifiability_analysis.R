@@ -24,7 +24,6 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
                                      constant_params = NULL,
                                      exported_to_cluster = NULL,
                                      break_at_bounds = FALSE,
-                                     # nlopt settings for the main optimization problem
                                      opts = list("algorithm" = "NLOPT_LN_NELDERMEAD",
                                                  "xtol_rel" = 1e-06, 
                                                  "ftol_rel" = 1e-06,
@@ -32,7 +31,6 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
                                                  "xtol_abs" = 0.0 ,
                                                  "maxeval" = 300,
                                                  "print_level" = 0),
-                                     # nlopt settings for the estimation of theta_step
                                      opts_theta_step = list("algorithm" = 'NLOPT_LN_SBPLX',
                                                             "xtol_rel_step" = 1e-05, 
                                                             "ftol_rel_step" = 1e-05,
@@ -91,10 +89,6 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
                    create_txt = create_txt)
   }
   
-  start.time <- Sys.time()
-  # Set up the cluster.
-  cluster <- makeCluster(N_cores)
-  
   # parallel_func is a wrapper of the profile_likelihood function in order to 
   # take all the input variable of the profile_likelihood as a list and un-list
   # the to provide them to profile_likelihood. It just returns the output
@@ -117,98 +111,30 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
                          min_step_coef,
                          max_step_coef,
                          break_at_bounds,
-                         # nlopt settings for the main optimization problem
                          opts,
-                         # nlopt settings for the estimation of theta_step
                          opts_theta_step,
                          create_txt)
     })
   }
+  start.time <- Sys.time()
+  # Set up the cluster.
+  cluster <- makeCluster(N_cores)
   # Export to the cluster any function or parameter that the obj_f needs to work.
   clusterExport(cl=cluster, c(names(exported_to_cluster),"obj_f", "profile_likelihood"))
   output <- parLapply(cluster, X, parallel_func)
   # Terminate the cluster.
   stopCluster(cluster)
   total.duration <- Sys.time() - start.time
-  
-  # Estimation of the confidence intervals
-  ci_estimation <- function(pl_results, alpha=0.95, df=1, global_optimum){
-    # pl_results should be a dataframe with 2 columns containing the theta values 
-    # and the corresponding chi^2 values
-    
-    # As confidence interevals of each theta are considered the borders of the
-    # following refion: 
-    # {theta | chi^2(theta) - chi^2(theta_hat) < Delta_alpha} where
-    Delta_alpha = qchisq(alpha, df)
-    threshold = Delta_alpha + global_optimum
-    # Estimate the lower confidence interval
-    # Check if the threshold was exceeded at the backwards search. If true, then
-    # the lower bound is the last theta under the threshold, else it is considered 
-    # -Inf.
-    if(pl_results[1,2] > threshold){
-      # Use those 2 theta_i values that yield to the minimum distance from the threshold
-      # and interpoalte between them in order to estimate the lower bound 
-      # of the parameter. 
-      
-      # This is the last value of the parameter that yields chi^2 lower than the 
-      # threshold
-      theta_under_threshold <- pl_results[2,1]
-      # This is the chi^2 value that this parameters has
-      chi2_under_threshold <- pl_results[2,2]
-      # This is the last value of the parameter that yields chi^2 grater than the 
-      # threshold
-      theta_over_threshold <- pl_results[1,1]
-      # This is the chi^2 value that this parameters has
-      chi2_over_threshold <- pl_results[1,2]
-      
-      slope <- (chi2_over_threshold - chi2_under_threshold)/(theta_over_threshold - theta_under_threshold)
-      dy <- threshold - chi2_under_threshold
-      dx <- dy/slope
-      lower_bound <- theta_under_threshold + dx
-      
-    }else{
-      lower_bound <- -Inf
-    }
-    
-    # Estimate the upper confidence interval
-    # Check if the threshold was exceeded at the forward search. If true, then
-    # the lower bound is the last theta under the threshold, else it is considered 
-    # +Inf.
-    if(pl_results[dim(pl_results)[1],2] > threshold){
-      # Use those 2 theta_i values that yield to the minimum distance from the threshold
-      # and interpoalte between them in order to estimate the lower bound 
-      # of the parameter. 
-      
-      # This is the last value of the parameter that yields chi^2 lower than the 
-      # threshold
-      theta_under_threshold <- pl_results[(dim(pl_results)[1]-1),1]
-      # This is the chi^2 value that this parameters has
-      chi2_under_threshold <- pl_results[(dim(pl_results)[1]-1),2]
-      # This is the last value of the parameter that yields chi^2 grater than the 
-      # threshold
-      theta_over_threshold <- pl_results[dim(pl_results)[1],1]
-      # This is the chi^2 value that this parameters has
-      chi2_over_threshold <- pl_results[dim(pl_results)[1],2]
-      
-      slope <- (chi2_over_threshold - chi2_under_threshold)/(theta_over_threshold - theta_under_threshold)
-      dy <- threshold - chi2_under_threshold
-      dx <- dy/slope
-      upper_bound <- theta_under_threshold + dx
-    }else{
-      upper_bound <- +Inf
-    }
-    
-    return(list("Lower_bound" = lower_bound,
-                "Upper_bound" = upper_bound)) 
-  }
-  
+
   # Collect all the results of interest and present them in a dataframe.
   results_df <- data.frame(matrix(NA, ncol = 6, nrow = length(thetas)))
   rownames(results_df) <- thetas_names
   colnames(results_df) <- c("Non-Identifiability" , "Optimal", "Lower_Bound", "Upper_Bound", "Exit_code_B", "Exit_code_F")
   for (i in 1:length(thetas)) {
     pl_results <- output[[i]]$'plik'
-    confidence_intervals <- ci_estimation(pl_results,  alpha = alpha, df=df, global_optimum)
+    confidence_intervals <- ci_estimation(pl_results,  alpha = alpha, df=df,
+                                          theta_hat=thetas[[i]], global_optimum=global_optimum,
+                                          lb=lb[i], ub=ub[i])
     results_df$Lower_Bound[i] <- confidence_intervals$Lower_bound
     results_df$Upper_Bound[i] <- confidence_intervals$Upper_bound
     results_df$Optimal[i] <- thetas[[i]]
