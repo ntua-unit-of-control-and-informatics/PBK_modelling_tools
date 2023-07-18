@@ -125,7 +125,7 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
   # Terminate the cluster.
   stopCluster(cluster)
   total.duration <- Sys.time() - start.time
-
+  
   # Collect all the results of interest and present them in a dataframe.
   results_df <- data.frame(matrix(NA, ncol = 6, nrow = length(thetas)))
   rownames(results_df) <- thetas_names
