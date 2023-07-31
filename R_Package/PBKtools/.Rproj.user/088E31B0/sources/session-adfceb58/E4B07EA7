@@ -1,0 +1,26 @@
+{
+    "id": "E4B07EA7",
+    "path": "~/PBKtools/R/Profile_Likelihood.R",
+    "project_path": "R/Profile_Likelihood.R",
+    "type": "r_source",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1690816809113.0,
+    "source_on_save": false,
+    "relative_order": 6,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source",
+        "cursorPosition": "14,38",
+        "scrollLine": "0"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1689841690,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1689841690,
+    "read_only": false,
+    "read_only_alternatives": []
+}
