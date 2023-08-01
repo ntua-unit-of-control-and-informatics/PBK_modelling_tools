@@ -7,10 +7,9 @@
 PBKOF(observed, predicted, comp.names = NULL)
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{observed}{list with the observed values}
+
+\item{predicted}{list with the predicted values}
 }
 \description{
 A custom metric for PBK models.

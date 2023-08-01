@@ -7,10 +7,9 @@
 AUC(x, y)
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{x}{a vector with the x coordinates}
+
+\item{y}{a vector with the y coordinates}
 }
 \description{
 Estimates the Area Under the Curve.

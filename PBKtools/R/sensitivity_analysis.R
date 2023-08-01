@@ -2,8 +2,8 @@
 #' 
 #' Estimates the Area Under the Curve.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param x a vector with the x coordinates
+#' @param y a vector with the y coordinates
 #' @export
 AUC <- function(x, y){
   individual_auc <- c()
@@ -13,25 +13,18 @@ AUC <- function(x, y){
   return(sum(individual_auc))
 }
 
-#---------------------------------------------------
-# SENSITIVITY ANALYSIS FUNCTION for PBPK Models
-#---------------------------------------------------
-# The function has the following input variables:
-# - model: a function of ODEs ready to be used with the deSolve library
-# - thetas: a vector with the values of the parameters, which will be analysed
-# - thetas_names: a vector with the names (as characters) of the thetas
-# - constant_params: a list with the constant parameters used in the model
-# - ranges: the perturbation applied to the parameters
-# - targets: a vector with the names of the outputs of interest
-# - ode_settings: a list with the settings to be used in the deSolve solver
-# - heatmap: binary variable that defines if the heatmap plots will be returned
-
 #' Local Sensitivity Analysis
 #' 
 #' Performs local sensitivity analysis to the parameters of a given model.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  model a function of ODEs ready to be used with the deSolve library
+#' @param thetas a vector with the values of the parameters, which will be analysed
+#' @param thetas_names a vector with the names (as characters) of the thetas
+#' @param constant_params a list with the constant parameters used in the model
+#' @param ranges the perturbation applied to the parameters
+#' @param targets a vector with the names of the outputs of interest
+#' @param ode_settings a list with the settings to be used in the deSolve solver
+#' @param heatmap binary variable that defines if the heatmap plots will be returned
 #' @export
 PBPK_sensitivity <- function(model, thetas, thetas_names, constant_params, ranges, targets,
                              ode_settings, heatmap = FALSE){

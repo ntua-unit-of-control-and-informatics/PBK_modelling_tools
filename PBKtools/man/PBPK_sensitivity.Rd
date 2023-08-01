@@ -16,10 +16,21 @@ PBPK_sensitivity(
 )
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{model}{a function of ODEs ready to be used with the deSolve library}
+
+\item{thetas}{a vector with the values of the parameters, which will be analysed}
+
+\item{thetas_names}{a vector with the names (as characters) of the thetas}
+
+\item{constant_params}{a list with the constant parameters used in the model}
+
+\item{ranges}{the perturbation applied to the parameters}
+
+\item{targets}{a vector with the names of the outputs of interest}
+
+\item{ode_settings}{a list with the settings to be used in the deSolve solver}
+
+\item{heatmap}{binary variable that defines if the heatmap plots will be returned}
 }
 \description{
 Performs local sensitivity analysis to the parameters of a given model.

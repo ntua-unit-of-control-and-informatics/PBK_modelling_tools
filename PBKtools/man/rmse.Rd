@@ -7,10 +7,9 @@
 rmse(observed, predicted)
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{observed}{vector with the observed values}
+
+\item{predicted}{vector with the predicted values}
 }
 \description{
 Estimates the root mean squared error.

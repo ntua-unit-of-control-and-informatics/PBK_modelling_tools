@@ -5,8 +5,30 @@
 #'identifiability analysis of partially observed dynamical models by exploiting
 #'the profile likelihood" (doi: https://doi.org/10.1093/bioinformatics/btp358).
 #' 
-#' @param  to be completed
-#' @return to be completed
+#' @param obj_f             function that returns the value of the objective function
+#' @param thetas            vector containing the optimal values of parameters 
+#' @param thetas_names      vector of characters with the names of the parameters
+#' @param data_df           dataframe containing the data used in the obj_f 
+#' @param errors_df         dataframe with the meassured experimental errors (or SD values) 
+#' @param lb                vector with the lower bounds of the "thetas" parameters
+#' @param ub                vector with the upper bounds of the "thetas" parameters
+#' @param N_samples         integer defining the number of samples taken around 
+#' the theta optimal value (N samples will be taken from each side of the theta)
+#' @param alpha             probability of chi-squared to estimate the quantile (it is the "p" variable of qchisq() function)
+#' @param df                degrees of freedom of qchisq()
+#' @param q                 a variable used in the estimation of the adaptive step (see Raue et al., 2009)
+#' @param global_optimum    scalar defining the global minimum of the objective function
+#' @param min_step_coef     coefficient defining the minimum permitted step
+#' @param max_step_coef     coefficient defining the maximum permitted step  
+#' @param N_cores           integer defining the number of cores for the parallel processing
+#' @param constant_params   vector with any extra constant parameters of the model and their names
+#' @param break_at_bounds   logical; if TRUE the the sampling of the parameter stops because the bounds were exceeded
+#' @param opts              list with the options selected for the minimization 
+#' of the objective function (check the nloptr package for more details)
+#' @param opts_theta_step   list with the options selected for the estimation 
+#' of the adaptive step (check the nloptr package for more details)
+#' @param create_txt        logical; if TRUE a txt file will be created at the current working directory 
+#' to save the samples of the parameters and the corresponding values of the objective function
 #' @export
 Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, errors_df,
                                      lb, ub,
@@ -34,34 +56,6 @@ Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, error
                                                             "maxeval_step" = 50,
                                                             "print_level_step" = 0),
                                      create_txt = TRUE){
-  
-  # INPUT VARIABLES:
-  # obj_f             function that returns the value of the objective function
-  # thetas            vector containing the optimal values of parameters 
-  # thetas_names      vector of characters with the names of the parameters
-  # data_df           dataframe containing the data used in the obj_f 
-  # errors_df         dataframe with the meassured experimental errors (or SD values) 
-  # lb                vector with the lower bounds of the "thetas" parameters
-  # ub                vector with the upper bounds of the "thetas" parameters
-  # N_samples         integer defining the number of samples taken around the theta optimal
-  #                   value (N samples will be taken from each side of the theta)
-  # alpha             probability of chi-squared to estimate the quantile (it is
-  #                   the "p" variable of qchisq() function)
-  # df                degrees of freedom of qchisq()
-  # q                 a variable used in the estimation of the adaptive step (see Raue et al., 2009)
-  # global_optimum    scalar defining the global minimum of the objective function
-  # min_step_coef     coefficient defining the minimum permitted step
-  # max_step_coef     coefficient defining the maximum permitted step  
-  # N_cores           integer defining the number of cores for the parallel processing
-  # constant_params   vector with any extra constant parameters of the model and their names
-  # break_at_bounds   logical; if TRUE the the sampling of the parameter stops because the bounds were exceeded
-  # opts              list with the options selected for the minimization of the objective function
-  #                   (check the nloptr package for more details)
-  # opts_theta_step   list with the options selected for the estimation of the adaptive step
-  #                   (check the nloptr package for more details)
-  # create_txt        logical; if TRUE a txt file will be created at the current working directory 
-  #                   to save the samples of the parameters and the corresponding values of the objective function
-  
   
   # Number of parameters tested in the identifiability analysis
   N_parameters <- length(thetas)

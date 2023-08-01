@@ -32,10 +32,49 @@ Identifiability_analysis(
 )
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{obj_f}{function that returns the value of the objective function}
+
+\item{thetas}{vector containing the optimal values of parameters}
+
+\item{thetas_names}{vector of characters with the names of the parameters}
+
+\item{data_df}{dataframe containing the data used in the obj_f}
+
+\item{errors_df}{dataframe with the meassured experimental errors (or SD values)}
+
+\item{lb}{vector with the lower bounds of the "thetas" parameters}
+
+\item{ub}{vector with the upper bounds of the "thetas" parameters}
+
+\item{N_samples}{integer defining the number of samples taken around
+the theta optimal value (N samples will be taken from each side of the theta)}
+
+\item{alpha}{probability of chi-squared to estimate the quantile (it is the "p" variable of qchisq() function)}
+
+\item{df}{degrees of freedom of qchisq()}
+
+\item{q}{a variable used in the estimation of the adaptive step (see Raue et al., 2009)}
+
+\item{global_optimum}{scalar defining the global minimum of the objective function}
+
+\item{min_step_coef}{coefficient defining the minimum permitted step}
+
+\item{max_step_coef}{coefficient defining the maximum permitted step}
+
+\item{N_cores}{integer defining the number of cores for the parallel processing}
+
+\item{constant_params}{vector with any extra constant parameters of the model and their names}
+
+\item{break_at_bounds}{logical; if TRUE the the sampling of the parameter stops because the bounds were exceeded}
+
+\item{opts}{list with the options selected for the minimization
+of the objective function (check the nloptr package for more details)}
+
+\item{opts_theta_step}{list with the options selected for the estimation
+of the adaptive step (check the nloptr package for more details)}
+
+\item{create_txt}{logical; if TRUE a txt file will be created at the current working directory
+to save the samples of the parameters and the corresponding values of the objective function}
 }
 \description{
 This is a function to implement the framework for identifiability analysis

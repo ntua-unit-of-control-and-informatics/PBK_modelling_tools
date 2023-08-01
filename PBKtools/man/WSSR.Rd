@@ -7,10 +7,9 @@
 WSSR(observed, predicted, weights, comp.names = NULL)
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{observed}{list with the observed values}
+
+\item{predicted}{list with the predicted values}
 }
 \description{
 Estimates the weighted sum of squared residuals.

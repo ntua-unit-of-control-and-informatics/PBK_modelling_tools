@@ -2,8 +2,8 @@
 #' 
 #' Estimates the Mean Squared Error 
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  observed vector with the observed values
+#' @param predicted vector with the predicted values
 #' @export
 mse_custom <- function(observed, predicted){
   mean((observed - predicted)^2)
@@ -13,8 +13,8 @@ mse_custom <- function(observed, predicted){
 #' 
 #' Estimates the mean absolute percentage error.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  observed vector with the observed values
+#' @param predicted vector with the predicted values
 #' @export
 mape <- function(observed, predicted){
   mean(abs(observed-predicted)*100/observed)
@@ -24,8 +24,8 @@ mape <- function(observed, predicted){
 #' 
 #' Estimates the root mean squared error.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  observed vector with the observed values
+#' @param predicted vector with the predicted values
 #' @export
 rmse <- function(observed, predicted){
   sqrt(mean((observed-predicted)^2)) 
@@ -35,8 +35,8 @@ rmse <- function(observed, predicted){
 #' 
 #' Estimates the absolute average-fold error.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  predictions list with the predicted values
+#' @param observations list with the observed values
 #' @export
 AAFE <- function(predictions, observations, times=NULL){
   y_obs <- unlist(observations)
@@ -55,8 +55,8 @@ AAFE <- function(predictions, observations, times=NULL){
 #' 
 #' A custom metric for PBK models.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  observed list with the observed values
+#' @param predicted list with the predicted values
 #' @export
 PBKOF <- function(observed, predicted, comp.names =NULL){
   # Check if the user provided the correct input format
@@ -113,16 +113,12 @@ PBKOF <- function(observed, predicted, comp.names =NULL){
   #return(list(Total_index = Ic, Compartment_index= I))
 }
 
-#=====================================#
-#  Weighted Sum of Squared Residuals  #
-#=====================================#
-
 #' Weighted Sum of Squared Residuals
 #' 
 #' Estimates the weighted sum of squared residuals.
 #'
-#' @param  to be completed
-#' @return to be completed
+#' @param  observed list with the observed values
+#' @param predicted list with the predicted values
 #' @export
 WSSR <- function(observed, predicted, weights, comp.names =NULL){
   # Check if the user provided the correct input format

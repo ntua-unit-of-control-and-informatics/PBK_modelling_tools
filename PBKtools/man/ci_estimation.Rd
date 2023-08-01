@@ -15,10 +15,22 @@ ci_estimation(
 )
 }
 \arguments{
-\item{to}{be completed}
+\item{pl_results}{dataframe with 2 columns containing the theta values and the corresponding chi^2 values}
+
+\item{alpha}{probability of chi-squared to estimate the quantile (it is the "p" variable of qchisq() function)}
+
+\item{df}{degrees of freedom of qchisq()}
+
+\item{theta_hat}{the optimal value of the parameter theta}
+
+\item{global_optimum}{scalar defining the global minimum of the objective function}
+
+\item{lb}{the lower bound of the theta_hat parameters}
+
+\item{ub}{the upper bound of the theta_hat parameters}
 }
 \value{
-to be completed
+A list with the lower and the upper bounds of the parameters.
 }
 \description{
 This code has been developed to be used with the profile_likelihood and identifiability_analysis
@@ -27,4 +39,6 @@ likelihood profiles. The method is an implementation of the methodology describe
 publication of Raue et al., 2009 entitled as "Structural and practical
 identifiability analysis of partially observed dynamical models by exploiting
 the profile likelihood" (doi: https://doi.org/10.1093/bioinformatics/btp358).
+As confidence interevals of each theta are considered the borders of the
+following region: {theta | chi^2(theta) - chi^2(theta_hat) < Delta_alpha}
 }

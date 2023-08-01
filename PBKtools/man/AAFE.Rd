@@ -7,10 +7,9 @@
 AAFE(predictions, observations, times = NULL)
 }
 \arguments{
-\item{to}{be completed}
-}
-\value{
-to be completed
+\item{predictions}{list with the predicted values}
+
+\item{observations}{list with the observed values}
 }
 \description{
 Estimates the absolute average-fold error.
