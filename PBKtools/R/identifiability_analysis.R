@@ -1,18 +1,12 @@
-# @author: Vassilis Minadakis
-# email: vassilisminadakis@gmail.com
-
-#=============================#
-#   Identifiability Analysis  #
-#=============================#
-# This is a function to implement the framework for identifiability analysis
-# as described in the publication of Raue et al., 2009 entitled as "Structural and practical 
-# identifiability analysis of partially observed dynamical models by exploiting
-# the profile likelihood" (doi: https://doi.org/10.1093/bioinformatics/btp358).
-# The necessary packages to run the following code are the:
-# 1) parLapply
-# 2) nloptr
-# Additionally, it is necessary to load the profile_likelihood function from the same repo
-
+#' Identifiability Analysis
+#'
+#'This is a function to implement the framework for identifiability analysis
+#'as described in the publication of Raue et al., 2009 entitled as "Structural and practical
+#'identifiability analysis of partially observed dynamical models by exploiting
+#'the profile likelihood" (doi: https://doi.org/10.1093/bioinformatics/btp358).
+#' 
+#' @param  to be completed
+#' @return to be completed
 #' @export
 Identifiability_analysis <- function(obj_f, thetas, thetas_names, data_df, errors_df,
                                      lb, ub,
