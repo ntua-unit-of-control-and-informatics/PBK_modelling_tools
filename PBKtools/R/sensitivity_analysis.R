@@ -1,6 +1,6 @@
 #' Area Under the Curb - AUC
 #' 
-#' This function estimate the area under the curve of a given dataset
+#' Estimates the Area Under the Curve.
 #'
 #' @param  to be completed
 #' @return to be completed

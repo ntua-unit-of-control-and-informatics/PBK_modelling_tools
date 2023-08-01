@@ -2,13 +2,7 @@
 % Please edit documentation in R/ci_estimation.R
 \name{ci_estimation}
 \alias{ci_estimation}
-\title{Confidence Intervals
-This code has been developed to be used with the profile_likelihood and identifiability_analysis
-functions, in order to estimate the confidence intervals of the parameters, based on their
-likelihood profiles. The method is an implementation of the methodology described in the
-publication of Raue et al., 2009 entitled as "Structural and practical
-identifiability analysis of partially observed dynamical models by exploiting
-the profile likelihood" (doi: https://doi.org/10.1093/bioinformatics/btp358).}
+\title{Confidence Intervals}
 \usage{
 ci_estimation(
   pl_results,
@@ -27,7 +21,6 @@ ci_estimation(
 to be completed
 }
 \description{
-Confidence Intervals
 This code has been developed to be used with the profile_likelihood and identifiability_analysis
 functions, in order to estimate the confidence intervals of the parameters, based on their
 likelihood profiles. The method is an implementation of the methodology described in the

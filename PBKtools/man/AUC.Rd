@@ -13,5 +13,5 @@ AUC(x, y)
 to be completed
 }
 \description{
-This function estimate the area under the curve of a given dataset
+Estimates the Area Under the Curve.
 }

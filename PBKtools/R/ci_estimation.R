@@ -1,4 +1,5 @@
 #' Confidence Intervals
+#' 
 #' This code has been developed to be used with the profile_likelihood and identifiability_analysis
 #' functions, in order to estimate the confidence intervals of the parameters, based on their
 #' likelihood profiles. The method is an implementation of the methodology described in the
