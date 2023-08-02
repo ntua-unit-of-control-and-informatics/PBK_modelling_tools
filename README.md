@@ -14,6 +14,7 @@ This is the repository for the PBKtools R package.
 - Identifiability_analysis: Performs identifiability analysis on the parameters of a model
 - PBPK_sensitivity: Performs local sensitivity analysis 
 - profile_likelihood: estimates the profile likelihood of a parameter of a model
+- Weighting.func: Assigns weight values to the data points.
 
 ## Installation 
 To install PBKtools package just run <code>devtools::install_github('ntua-unit-of-control-and-informatics/PBK_modelling_tools/PBKtools')</code>.   
