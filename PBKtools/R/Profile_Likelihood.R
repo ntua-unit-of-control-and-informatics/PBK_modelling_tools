@@ -109,7 +109,7 @@ profile_likelihood <- function(obj_f,
   while (iter_counter < N_samples & current_score < threshold) {
     iter_counter <- iter_counter + 1
     # Estimation of theta_step 
-    theta_step <-  nloptr(x0 = 0.25*abs(thetas[[i]]),
+    theta_step <-  nloptr::nloptr(x0 = 0.25*abs(thetas[[i]]),
                                   eval_f = theta_step_estimation,
                                   lb = min_step_coef*abs(thetas[[i]]),
                                   ub = max_step_coef*abs(thetas[[i]]),
@@ -147,7 +147,7 @@ profile_likelihood <- function(obj_f,
     
     # define the lower and upper bounds of the parameters
     set.seed(12312)
-    optimization<- nloptr(x0 = x0,
+    optimization<- nloptr::nloptr(x0 = x0,
                                   eval_f = obj_f,
                                   lb = lb[-i],
                                   ub = ub[-i],
@@ -205,7 +205,7 @@ profile_likelihood <- function(obj_f,
   while (iter_counter < N_samples & current_score < threshold) {
     iter_counter <- iter_counter + 1
     # Estimation of theta_step 
-    theta_step <-  nloptr(x0 = 0.25*abs(thetas[[i]]),
+    theta_step <-  nloptr::nloptr(x0 = 0.25*abs(thetas[[i]]),
                                   eval_f = theta_step_estimation,
                                   lb  = min_step_coef*abs(thetas[[i]]),
                                   ub = max_step_coef*abs(thetas[[i]]),
@@ -238,7 +238,7 @@ profile_likelihood <- function(obj_f,
     params_names <- names(x0)
     
     set.seed(12312)
-    optimization<- nloptr(x0 = x0,
+    optimization<- nloptr::nloptr(x0 = x0,
                                   eval_f = obj_f,
                                   lb  = lb[-i],
                                   ub = ub[-i],
