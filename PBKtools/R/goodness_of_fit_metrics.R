@@ -119,15 +119,16 @@ PBKOF <- function(observed, predicted, comp.names =NULL){
 #'
 #' @param  observed list with the observed values
 #' @param predicted list with the predicted values
-#' @export
-WSSR <- function(observed, predicted, weights, comp.names =NULL){
+#' @param weights_values list with the weights
+#' @export 
+WSSR <- function(observed, predicted, weights_values, comp.names =NULL){
   # Check if the user provided the correct input format
-  if (!is.list(observed) || !is.list(predicted) || !is.list(weights)){
-    stop(" The observations, predictions and weights must be lists")
+  if (!is.list(observed) || !is.list(predicted) || !is.list(weights_values)){
+    stop(" The observations, predictions and weights_values must be lists")
   }
   # Check if the user provided equal length lists
-  if (length(observed) != length(predicted) || length(observed) != length(weights)){
-    stop(" The observations, predictions and weights must have the same compartments")
+  if (length(observed) != length(predicted) || length(observed) != length(weights_values)){
+    stop(" The observations, predictions and weights_values must have the same compartments")
   }
   
   # Define the number of observed outputs
@@ -140,8 +141,8 @@ WSSR <- function(observed, predicted, weights, comp.names =NULL){
   for (i in 1:N_outputs) { # loop over the observed outputs
     N_obs[i] <- length(observed[[i]])
     
-    # Check that all observed, predicted and weights vectors have the same length
-    if(N_obs[i] != length(predicted[[i]]) || N_obs[i] != length(weights[[i]])){
+    # Check that all observed, predicted and weights_values vectors have the same length
+    if(N_obs[i] != length(predicted[[i]]) || N_obs[i] != length(weights_values[[i]])){
       stop(paste0("Compartment ",i," had different length in the observations and predictions"))
     }
     # The number of observations for output i
@@ -150,23 +151,12 @@ WSSR <- function(observed, predicted, weights, comp.names =NULL){
     # Initiate a variable to estimate the sum of squared residuals for output j
     sq_weighted_res_j <- 0
     for (j in 1:N) { #loop over the experimental points i compartment i
-      sq_weighted_res_j <- sq_weighted_res_j + ((observed[[i]][j] - predicted[[i]][j]) / weights[[i]][j])^2   
+      sq_weighted_res_j <- sq_weighted_res_j + ((observed[[i]][j] - predicted[[i]][j]) / weights_values[[i]][j])^2   
     }
     outputs_res[i] <- sq_weighted_res_j
   }
   
   WSSR_results <- sum(outputs_res)
-  
-  # Name the list of compartment discrepancy indices
-  if ( !is.null(comp.names)){
-    names(WSSR_results) <- comp.names
-  }else if (!is.null(names(observed))){
-    names(WSSR_results) <- names(observed)
-  } else if (!is.null(names(predicted)) && is.null(comp.names) ){
-    names(WSSR_results) <- names(predicted)
-  } else if (!is.null(names(weights)) && is.null(comp.names) ){
-    names(WSSR_results) <- names(weights)
-  }
   
   return(WSSR_results)
 }

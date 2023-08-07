@@ -4,12 +4,14 @@
 \alias{WSSR}
 \title{Weighted Sum of Squared Residuals}
 \usage{
-WSSR(observed, predicted, weights, comp.names = NULL)
+WSSR(observed, predicted, weights_values, comp.names = NULL)
 }
 \arguments{
 \item{observed}{list with the observed values}
 
 \item{predicted}{list with the predicted values}
+
+\item{weights_values}{list with the weights}
 }
 \description{
 Estimates the weighted sum of squared residuals.
