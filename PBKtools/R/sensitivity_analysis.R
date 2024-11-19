@@ -53,16 +53,19 @@ PBPK_sensitivity <- function(model, thetas, thetas_names, constant_params, range
   # Take all objects from the ode_settings list 
   inits <- ode_settings$inits # Initial conditions of the ODEs
   sample_time <- ode_settings$sample_time # Time points of solution
+  events <- ode_settings$events # Events of the ODEs
   # Define the solver to use later
   solver <- ifelse(ode_settings$solver == "default", "bdf", ode_settings$solver)
   
   # Assign the corresponding names to the parameters
   names(thetas) <- thetas_names
   # Merge into a vector the constant parameters and the parameters of the sensitivity test
-  params <- c(params_list,thetas)
+  params <- c(constant_params,thetas)
   
   # Solve the ODEs for the initial values of parameters
-  solution_0 <- deSolve::ode(times = sample_time,  func = model, y = inits, parms = params, 
+  solution_0 <- deSolve::ode(times = sample_time,  func = model, y = inits, 
+                             parms = params,
+                             events=ode_settings$events,
                              method=solver, rtol = 1e-5, atol = 1e-5)
   
   if(sum(!(targets %in% colnames(solution_0))) != 0){
@@ -92,10 +95,12 @@ PBPK_sensitivity <- function(model, thetas, thetas_names, constant_params, range
     # Assign names to the parameters
     names(thetas) <- thetas_names
     # Merge into a vector the constant parameters and the parameters of the sensitivity test
-    params <- c(params_list,thetas)
+    params <- c(constant_params,thetas)
     
     # Solve the ode system for given initial values and time
-    solution <- deSolve::ode(times = sample_time,  func = model, y = inits, parms = params, 
+    solution <- deSolve::ode(times = sample_time,  func = model, y = inits, 
+                             parms = params,
+                             events=ode_settings$events,
                              method=solver, rtol = 1e-5, atol = 1e-5)
     
     for (j in 1:N_targets) {
