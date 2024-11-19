@@ -73,7 +73,7 @@ profile_likelihood <- function(obj_f,
       x[i] <- x[i] - theta_step}
     chi2_last <- current_score
     
-    chi2 <- obj_f(x = x, constant_theta = NULL, constant_theta_name = NULL, params_names = names(x),
+    chi2 <- obj_f(x = x, constant_theta = NULL, constant_theta_names = NULL, params_names = names(x),
                   constant_params = constant_params,
                   data_df = data_df, errors_df = errors_df)
     
@@ -139,7 +139,7 @@ profile_likelihood <- function(obj_f,
       break
     } 
     # The name of the constant theta parameter
-    constant_theta_name <- theta_i_name
+    constant_theta_names <- theta_i_name
     # Take as x0 all the parameters except the one which will be fixed
     x0 <- theta_last[-i]
     # The names of the rest parameters
@@ -153,13 +153,13 @@ profile_likelihood <- function(obj_f,
                                   ub = ub[-i],
                                   opts = opts,
                                   constant_theta = constant_theta,
-                                  constant_theta_name = constant_theta_name,
+                                  constant_theta_names = constant_theta_names,
                                   params_names = params_names,
                                   constant_params=constant_params,
                                   data_df = data_df,
                                   errors_df = errors_df)
     
-    cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_name ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
+    cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_names ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
     
     forward_results_df[iter_counter,] <- c(constant_theta, optimization$objective)
     
@@ -231,7 +231,7 @@ profile_likelihood <- function(obj_f,
       break
     } 
     # The name of the constant theta parameter
-    constant_theta_name <- theta_i_name
+    constant_theta_names <- theta_i_name
     # Take as x0 all the parameters except the one which will be fixed
     x0 <- theta_last[-i]
     # The names of the rest parameters
@@ -244,13 +244,13 @@ profile_likelihood <- function(obj_f,
                                   ub = ub[-i],
                                   opts = opts,
                                   constant_theta = constant_theta,
-                                  constant_theta_name = constant_theta_name,
+                                  constant_theta_names = constant_theta_names,
                                   params_names = params_names,
                                   constant_params=constant_params,
                                   data_df = data_df,
                                   errors_df = errors_df)
     
-    cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_name ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
+    cat("Calculating PL for parameter ", theta_i_name, " and iter = ", iter_counter,". ", "step =", theta_step , constant_theta_names ," = ", constant_theta , "=> Likelihood = ", optimization$objective, "\n")  
     
     backward_results_df[iter_counter,] <- c(constant_theta, optimization$objective)
     
